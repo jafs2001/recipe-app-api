@@ -10,7 +10,7 @@ WORKDIR /app
 EXPOSE 8000
 
 ARG DEV=false
-RUN apk add --no-cache bash && \
+RUN apk add --no-cache busybox && \
     python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     /py/bin/pip install -r /tmp/requirements.txt && \
@@ -21,8 +21,9 @@ RUN apk add --no-cache bash && \
     adduser \
         --disabled-password \
         --no-create-home \
+        --shell /bin/sh \
         django-user
 
-ENV PATH='/py/bin:$PATH'
+ENV PATH="/py/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH"
 
 USER django-user
